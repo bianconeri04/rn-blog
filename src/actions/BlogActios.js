@@ -1,8 +1,23 @@
-export const addPost = (dispatch, callback) => {
-    return (id, title, content) => {
+import jsonServer from "../api/jsonServerApi";
+
+export const getPosts = (dispatch) => {
+    return async () => {
+        const result = await jsonServer.get("/blogPosts");
+        
         dispatch({
-            type:"CREATE_POST",
-            payload:{id:Math.floor(Math.random()*999999), title, content}
+            "type": "GET_POSTS",
+            "payload": result.data
+        });
+    };
+};
+
+export const addPost = (dispatch, callback) => {
+    return async (id, title, content) => {
+        const result = await jsonServer.post("/blogPosts",{title, content});
+        
+        dispatch({
+            "type": "CREATE_POST",
+            "payload": result.data
         });
     
         if(callback){
@@ -12,10 +27,12 @@ export const addPost = (dispatch, callback) => {
 };
 
 export const updatePost = (dispatch, callback) => {
-    return (id, title, content) => {
+    return async (id, title, content) => {
+        const result = await jsonServer.put(`/blogPosts/${id}`,{title, content});
+
         dispatch({
-            type:"UPDATE_POST",
-            payload:{id, title, content}
+            "type": "UPDATE_POST",
+            "payload": result.data
         });
         
         if(callback){
@@ -25,7 +42,9 @@ export const updatePost = (dispatch, callback) => {
 };
 
 export const deletePost = (dispatch, callback) => {
-    return (id) => {
+    return async (id) => {
+        const result = await jsonServer.delete(`/blogPosts/${id}`);
+
         dispatch({type:"DELETE_POST", payload:{id}});
         
         if(callback){

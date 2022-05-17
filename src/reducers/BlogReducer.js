@@ -1,6 +1,6 @@
 const BlogReducer = (state, action) => {
     switch(action.type){
-    case "GET_POSTS": return state;
+    case "GET_POSTS": return action.payload;
     case "CREATE_POST": return [...state, action.payload];
     case "UPDATE_POST": return state.map(post => {
         if(post.id == action.payload.id){

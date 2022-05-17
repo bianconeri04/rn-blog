@@ -1,11 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {View, Text, StyleSheet, TouchableOpacity, FlatList} from "react-native";
 import BlogContext from "../context/BlogContext";
 import { Ionicons } from '@expo/vector-icons';
 import { deletePost } from "../actions/BlogActios";
+import { getPosts } from "../actions/BlogActios";
 
 const HomeScreen = ({navigation}) => {
     const [state, dispatch] = useContext(BlogContext);
+
+    useEffect(()=>{
+        getPosts(dispatch)();
+    },[]);
 
     const viewPost = (id) => {
         navigation.navigate("Details",{id});
